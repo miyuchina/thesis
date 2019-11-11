@@ -1,0 +1,60 @@
+{
+    "fancy": {
+        "pre": {},
+        "post": {
+            "makemybib": null
+        },
+        "chapters": {
+            "ch0": {
+                "pre": {
+                    "text":  "# Jameson after Spivak",
+                    "mysubtitle": "Prologue"
+                }
+            },
+            "ch1-1": {
+                "pre": {
+                    "text":  "# The Other Postmodernism",
+                    "mysubtitle": "Chapter 1"
+                }
+            },
+            "ch1-2": {
+                "pre": {
+                    "fancybreak": "* * *"
+                }
+            },
+            "ch1-3": {
+                "pre": {
+                    "fancybreak": "* * *"
+                }
+            }
+        }
+    },
+    "plain": {
+        "pre": {},
+        "post": {
+            "makemybib": null
+        },
+        "chapters": {
+            "ch0": {
+                "pre": {
+                    "makemytitle": ["Prologue", "Mi Yu"]
+                }
+            },
+            "ch1-1": {
+                "pre": {
+                    "makemytitle": ["Chapter 1, Section 1", "Mi Yu"]
+                }
+            },
+            "ch1-2": {
+                "pre": {
+                    "makemytitle": ["Chapter 1, Section 2", "Mi Yu"]
+                }
+            },
+            "ch1-3": {
+                "pre": {
+                    "makemytitle": ["Chapter 1, Section 3", "Mi Yu"]
+                }
+            }
+        }
+    }
+}

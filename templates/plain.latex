@@ -1,0 +1,47 @@
+\documentclass[12pt,letterpaper]{article}
+
+\usepackage{xeCJK}
+\usepackage[margin=1in]{geometry}
+\usepackage[doublespacing]{setspace}
+\usepackage{times}
+\usepackage[T1]{fontenc}
+\usepackage[hang,flushmargin,ragged]{footmisc}
+\usepackage[breaklinks=true]{hyperref}
+\usepackage{fancyhdr}
+\usepackage{etoolbox}
+\usepackage[document]{ragged2e}
+
+\setCJKmainfont{FandolKai-Regular.otf}
+
+\AtBeginEnvironment{quote}{\onehalfspacing\small}
+\AtEndEnvironment{quote}{\vspace{-\topsep}}
+
+\pagestyle{fancy}
+\rhead{\thepage} 
+\cfoot{} 
+\renewcommand{\headrulewidth}{0pt} 
+\renewcommand{\footrulewidth}{0pt} 
+\setlength\headsep{0.333in}
+
+\newcommand{\makemytitle}[2]{
+    \noindent \textbf{#1} \\
+    \noindent #2
+    \vspace{2em}
+}
+
+\newcommand{\makemybib}{
+    \newpage
+    \begin{center}\textbf{Works Cited}\end{center}
+
+    \setlength{\parindent}{-1em}
+    \setlength{\leftskip}{1em}
+}
+
+\begin{document}
+
+\raggedright
+\setlength{\parindent}{0.3in}
+
+$body$
+
+\end{document}
