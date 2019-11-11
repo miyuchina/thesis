@@ -2,7 +2,7 @@
 
 \usepackage{xeCJK}
 \usepackage[margin=1in]{geometry}
-\usepackage[doublespacing]{setspace}
+\usepackage{setspace}
 \usepackage{times}
 \usepackage[T1]{fontenc}
 \usepackage[hang,flushmargin,ragged]{footmisc}
@@ -12,6 +12,7 @@
 \usepackage[document]{ragged2e}
 
 \setCJKmainfont{FandolKai-Regular.otf}
+\setstretch{2}
 
 \AtBeginEnvironment{quote}{\onehalfspacing\small}
 \AtEndEnvironment{quote}{\vspace{-\topsep}}
@@ -33,6 +34,7 @@
     \newpage
     \begin{center}\textbf{Works Cited}\end{center}
 
+    \setstretch{1.5}
     \setlength{\parindent}{-1em}
     \setlength{\leftskip}{1em}
 }
