@@ -1,61 +1,76 @@
-REF          = reference
+REF          = ./reference
 BIB          = $(REF)/bib.bib
 CSL          = $(REF)/mla.csl
 
-TEMPLATE     = templates
-BUILD        = build
+TEMPLATES    = ./templates
+BUILD        = ./build
+BIN          = ./bin
 
 PANDOC       = /usr/bin/pandoc
 PANDOC_FLAGS = --filter pandoc-citeproc \
 	       --bibliography $(BIB) \
 	       --csl $(CSL)
-PREPARE      = ./prepare
+PREPARE      = $(BIN)/prepare
+CHAPTERS     = $(BIN)/chapters
 
-src          = $(addprefix $(BUILD)/prep-,$(sort $(wildcard *.md)))
-pdf          = $(subst prep-,,$(subst md,pdf,$(src)))
-doc          = $(subst prep-,,$(subst md,docx,$(src)))
-thesis       = $(BUILD)/thesis.pdf
+src          = $(sort $(wildcard *.md))
+section-src  = $(addprefix $(BUILD)/,$(src))
+thesis-src   = $(BUILD)/pre.md $(section-src) $(BUILD)/post.md
 
-
-all: standalone plain doc
-
-
-standalone: PANDOC_FLAGS += --pdf-engine xelatex \
-		            --toc \
-                            --top-level-division chapter \
-		            --template $(TEMPLATE)/thesis.latex \
-		            --file-scope
-standalone: clean prepare-standalone
-	$(PANDOC) $(PANDOC_FLAGS) \
-	    $(BUILD)/prep-pre.md $(src) $(BUILD)/prep-post.md \
-	    -o $(thesis)
+print-pdf    = $(BUILD)/print.pdf
+thesis-pdf   = $(BUILD)/thesis.pdf
+chapter-pdf  = $(addprefix $(BUILD)/,$(addsuffix .pdf,$(shell $(CHAPTERS))))
+section-pdf  = $(subst md,pdf,$(section-src))
 
 
-plain: PANDOC_FLAGS += --pdf-engine xelatex \
-                       --template $(TEMPLATE)/plain.latex
-plain: clean prepare-plain $(pdf)
+all: print thesis chapter section
 
 
-prepare-standalone:
-	$(PREPARE) fancy standalone
+print: PANDOC_FLAGS += --pdf-engine xelatex \
+		       --toc \
+                       --top-level-division chapter \
+		       --template $(TEMPLATES)/print.latex \
+		       --file-scope
+print: $(thesis-src)
+	$(PANDOC) $(PANDOC_FLAGS) $^ -o $(print-pdf)
 
 
-prepare-plain:
-	$(PREPARE) plain all
+thesis: PANDOC_FLAGS += --pdf-engine xelatex \
+                        --top-level-division chapter \
+		        --template $(TEMPLATES)/thesis.latex \
+		        --file-scope
+thesis: $(thesis-src)
+	$(PANDOC) $(PANDOC_FLAGS) $^ -o $(thesis-pdf)
 
 
-doc: PANDOC_FLAGS += --reference-doc $(TEMPLATE)/mla.docx
-doc: clean prepare-plain $(doc)
+chapter: PANDOC_FLAGS += --pdf-engine xelatex \
+                         --template $(TEMPLATES)/chapter.latex \
+		         --file-scope
+chapter: $(chapter-pdf)
 
 
-%.pdf: prep-%.md
+section: PANDOC_FLAGS += --pdf-engine xelatex \
+                         --template $(TEMPLATES)/section.latex
+section: $(section-pdf)
+
+
+$(BUILD)/%.pdf: $(BUILD)/%.md
 	$(PANDOC) $(PANDOC_FLAGS) $< -o $@
 
 
-%.docx: prep-%.md
-	$(PANDOC) $(PANDOC_FLAGS) $< -o $@
+.SECONDEXPANSION:
+$(BUILD)/%.pdf: $$(shell $(CHAPTERS) %)
+	$(PANDOC) $(PANDOC_FLAGS) $^ -o $@
+
+
+$(BUILD)/%.md: %.md
+	$(PREPARE) $<
+
+
+$(BUILD)/%.md:
+	$(PREPARE)
 
 
 .PHONY: clean
 clean:
-	@-rm -f $(BUILD)/*.pdf $(BUILD)/*.md
+	rm -f $(BUILD)/*.pdf $(BUILD)/*.md

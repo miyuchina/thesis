@@ -1,0 +1,21 @@
+\input{templates/common.latex}
+
+\newcommand{\mylocalpreamble}[1]{
+    \IfEqCase{#1}{
+        {ch0}{\makemytitle{Prologue}}
+        {ch1-1}{\makemytitle{Chapter 1, Section 1}}
+        {ch1-2}{\makemytitle{Chapter 1, Section 2}}
+        {ch1-3}{\makemytitle{Chapter 1, Section 3}}
+    }[\PackageError{localpreamble}{Undefined option to local preamble: #1}{}]
+}
+
+\newcommand{\mylocalpostamble}[1]{\makemybib}
+
+\begin{document}
+
+\raggedright
+\setlength{\parindent}{0.3in}
+
+$body$
+
+\end{document}

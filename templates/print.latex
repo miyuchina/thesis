@@ -1,0 +1,90 @@
+\documentclass[11pt,letterpaper]{memoir}
+
+\usepackage{xeCJK}
+\usepackage[hang,flushmargin,ragged]{footmisc}
+\usepackage[breaklinks=true]{hyperref}
+\usepackage{titlesec}
+\usepackage{xstring}
+
+\setcounter{chapter}{-1}
+\renewcommand\printtoctitle[1]{\normalfont\LARGE\bfseries #1}
+\renewcommand*{\cftchapterleader}{}
+\renewcommand{\cftchapterpagefont}{}
+\renewcommand*{\cftchapterformatpnum}[1]{~\textbullet~#1}
+\renewcommand{\cftchapterafterpnum}{\cftparfillskip}
+\setrmarg{3.55em plus 1fil}
+\setsecnumdepth{chapter}
+\maxsecnumdepth{chapter}
+\settocdepth{chapter}
+
+\setmainfont{Plantin MT Pro}
+\setCJKmainfont{FandolKai-Regular.otf}
+
+\OnehalfSpacing
+
+\pagestyle{plain}
+
+\setlength{\footnotemargin}{1em}
+\raggedbottom
+
+\titleformat{\chapter}
+    [display]                     % shape
+    {\normalfont\Large\bfseries}  % format
+    {}                            % label
+    {0pt}                         % sep
+    {}                            % before-code
+    []                            % after-code
+
+\titleformat{\section}
+    [display]                     % shape
+    {\normalfont\large\bfseries}  % format
+    {}                            % label
+    {0pt}                         % sep
+    {}                            % before-code
+    []                            % after-code
+
+\newcommand{\mysubtitle}[1]{
+    \vspace{-8em}
+    {\Large\itshape #1}
+    \vspace{10em}
+}
+
+\newcommand{\makemybib}{
+    \hypertarget{bibliography}{%
+    \chapter*{Works Cited}\label{bibliography}}
+    \addcontentsline{toc}{chapter}{Works Cited}
+
+    \raggedright
+    \setlength{\parindent}{-2em}
+    \setlength{\leftskip}{2em}
+    \noindent
+}
+
+\newcommand{\mychapter}[1]{
+    \hypertarget{#1}{\chapter{#1}\label{#1}}
+}
+
+\newcommand{\myglobalpreamble}{}
+
+\newcommand{\mylocalpreamble}[1]{
+    \IfEqCase{#1}{
+        {ch0}{\mychapter{Jameson after Spivak}\mysubtitle{Prologue}}
+        {ch1-1}{\mychapter{The Other Postmodernism}\mysubtitle{Chapter 1}}
+        {ch1-2}{\fancybreak{* * *}}
+        {ch1-3}{\fancybreak{* * *}}
+    }[\PackageError{localpreamble}{Undefined option to local preamble: #1}{}]
+}
+
+\newcommand{\mylocalpostamble}[1]{}
+
+\newcommand{\myglobalpostamble}{\makemybib}
+
+\begin{document}
+
+$if(toc)$
+\tableofcontents*
+$endif$
+
+$body$
+
+\end{document}

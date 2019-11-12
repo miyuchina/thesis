@@ -10,6 +10,7 @@
 \usepackage{fancyhdr}
 \usepackage{etoolbox}
 \usepackage[document]{ragged2e}
+\usepackage{xstring}
 
 \setCJKmainfont{FandolKai-Regular.otf}
 \setstretch{2}
@@ -24,10 +25,10 @@
 \renewcommand{\footrulewidth}{0pt} 
 \setlength\headsep{0.333in}
 
-\newcommand{\makemytitle}[2]{
-    \noindent \textbf{#1} \\
-    \noindent #2
-    \vspace{2em}
+\newcommand{\makemytitle}[1]{
+    \clearpage
+    \noindent\textbf{#1}\\
+    \noindent{Mi Yu}\\
 }
 
 \newcommand{\makemybib}{
@@ -38,12 +39,3 @@
     \setlength{\parindent}{-1em}
     \setlength{\leftskip}{1em}
 }
-
-\begin{document}
-
-\raggedright
-\setlength{\parindent}{0.3in}
-
-$body$
-
-\end{document}

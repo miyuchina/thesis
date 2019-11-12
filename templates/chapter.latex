@@ -1,7 +1,5 @@
 \input{templates/common.latex}
 
-\newcommand{\myglobalpreamble}{}
-
 \newcommand{\mylocalpreamble}[1]{
     \IfEqCase{#1}{
         {ch0}{\makemytitle{Prologue}}
@@ -11,9 +9,7 @@
     }[\PackageError{localpreamble}{Undefined option to local preamble: #1}{}]
 }
 
-\newcommand{\mylocalpostamble}[1]{}
-
-\newcommand{\myglobalpostamble}{\makemybib}
+\newcommand{\mylocalpostamble}[1]{\makemybib}
 
 \newcommand{\makemysection}[1]{
     \noindent\textbf{#1}\\

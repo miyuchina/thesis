@@ -1,0 +1,46 @@
+#!/bin/sh
+
+set -e
+
+BUILD_DIR=build
+PRE_FILE="${BUILD_DIR}/pre.md"
+POST_FILE="${BUILD_DIR}/post.md"
+
+GLOBAL_PREAMBLE_CMD="myglobalpreamble"
+GLOBAL_POSTAMBLE_CMD="myglobalpostamble"
+LOCAL_PREAMBLE_CMD="mylocalpreamble"
+LOCAL_POSTAMBLE_CMD="mylocalpostamble"
+
+global_preamble() {
+    echo "\\${GLOBAL_PREAMBLE_CMD}{}"
+}
+
+global_postamble() {
+    echo "\\${GLOBAL_POSTAMBLE_CMD}{}"
+}
+
+local_preamble() {
+    echo "\\${LOCAL_PREAMBLE_CMD}{"$(basename $1 .md)"}"
+}
+
+local_postamble() {
+    echo "\\${LOCAL_POSTAMBLE_CMD}{"$(basename $1 .md)"}"
+}
+
+[ ! -d "${BUILD_DIR}" ] && mkdir "${BUILD_DIR}"
+
+if [ -z "$*" ]
+then
+    global_preamble  > "${PRE_FILE}"
+    global_postamble > "${POST_FILE}"
+fi
+
+for file in "$@"
+do
+    build_file="${BUILD_DIR}/${file}"
+    local_preamble  "${file}" >  "${build_file}"
+    echo            ""        >> "${build_file}"
+    cat             "${file}" >> "${build_file}"
+    echo            ""        >> "${build_file}"
+    local_postamble "${file}" >> "${build_file}"
+done
