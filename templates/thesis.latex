@@ -15,10 +15,6 @@
 
 \newcommand{\myglobalpostamble}{\makemybib}
 
-\newcommand{\makemysection}[1]{
-    \noindent\textbf{#1}\\
-}
-
 \begin{document}
 
 \raggedright

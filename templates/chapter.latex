@@ -11,10 +11,6 @@
 
 \newcommand{\mylocalpostamble}[1]{\makemybib}
 
-\newcommand{\makemysection}[1]{
-    \noindent\textbf{#1}\\
-}
-
 \begin{document}
 
 \raggedright

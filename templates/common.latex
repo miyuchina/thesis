@@ -31,6 +31,10 @@
     \noindent{Mi Yu}\\
 }
 
+\newcommand{\makemysection}[1]{
+    \noindent\textbf{#1}\\
+}
+
 \newcommand{\makemybib}{
     \newpage
     \begin{center}\textbf{Works Cited}\end{center}
