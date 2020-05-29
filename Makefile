@@ -1,76 +1,45 @@
-REF          = ./reference
-BIB          = $(REF)/bib.bib
-CSL          = $(REF)/mla.csl
+BUILD        := build
+THESIS       := thesis
+BIBLIOGRAPHY := bib.bib
 
-TEMPLATES    = ./templates
-BUILD        = ./build
-BIN          = ./bin
+TEMPLATE     := template.tex
+CHAPTERS     := $(sort $(wildcard *.md))
+INCLUDES     := $(wildcard *.tex)
 
-PANDOC       = /usr/bin/pandoc
-PANDOC_FLAGS = --filter pandoc-citeproc \
-	       --bibliography $(BIB) \
-	       --csl $(CSL)
-PREPARE      = $(BIN)/prepare
-CHAPTERS     = $(BIN)/chapters
+LATEX        := $(shell which xelatex)
+LATEX_FLAGS  := $(if $(DEBUG),,-interaction=batchmode)
 
-src          = $(sort $(wildcard *.md))
-section-src  = $(addprefix $(BUILD)/,$(src))
-thesis-src   = $(BUILD)/pre.md $(section-src) $(BUILD)/post.md
+BIBER        := $(shell which biber)
+BIBER_FLAGS  := $(if $(DEBUG),,--quiet)
 
-print-pdf    = $(BUILD)/print.pdf
-thesis-pdf   = $(BUILD)/thesis.pdf
-chapter-pdf  = $(addprefix $(BUILD)/,$(addsuffix .pdf,$(shell $(CHAPTERS))))
-section-pdf  = $(subst md,pdf,$(section-src))
+PANDOC       := $(shell which pandoc)
+PANDOC_FLAGS := --pdf-engine xelatex \
+		--biblatex \
+		--template $(TEMPLATE) \
+		--top-level-division chapter \
+		--file-scope
 
 
-all: print thesis chapter section
+$(THESIS).pdf: $(BUILD)/$(THESIS).pdf
+	cp $< $@
+
+$(BUILD)/$(THESIS).pdf: $(BUILD)/$(THESIS).bbl
+	cd $(BUILD) && $(LATEX) $(LATEX_FLAGS) $(THESIS).tex
+
+$(BUILD)/$(THESIS).bbl: $(BUILD)/$(THESIS).bcf $(BUILD)/$(BIBLIOGRAPHY)
+	cd $(BUILD) && $(BIBER) $(BIBER_FLAGS) $(THESIS)
+
+$(BUILD)/$(THESIS).bcf: $(addprefix $(BUILD)/,$(INCLUDES)) $(BUILD)/$(THESIS).tex
+	cd $(BUILD) && $(LATEX) $(LATEX_FLAGS) $(THESIS).tex
+
+$(BUILD)/$(THESIS).tex: $(CHAPTERS) $(TEMPLATE)
+	$(PANDOC) $(PANDOC_FLAGS) $(CHAPTERS) -o $@
+
+$(BUILD)/%: %
+	cp $< $@
 
 
-print: PANDOC_FLAGS += --pdf-engine xelatex \
-		       --toc \
-                       --top-level-division chapter \
-		       --template $(TEMPLATES)/print.latex \
-		       --file-scope
-print: $(thesis-src)
-	$(PANDOC) $(PANDOC_FLAGS) $^ -o $(print-pdf)
+.PHONY: clean columns
 
-
-thesis: PANDOC_FLAGS += --pdf-engine xelatex \
-                        --top-level-division chapter \
-		        --template $(TEMPLATES)/thesis.latex \
-		        --file-scope
-thesis: $(thesis-src)
-	$(PANDOC) $(PANDOC_FLAGS) $^ -o $(thesis-pdf)
-
-
-chapter: PANDOC_FLAGS += --pdf-engine xelatex \
-                         --template $(TEMPLATES)/chapter.latex \
-		         --file-scope
-chapter: $(chapter-pdf)
-
-
-section: PANDOC_FLAGS += --pdf-engine xelatex \
-                         --template $(TEMPLATES)/section.latex
-section: $(section-pdf)
-
-
-$(BUILD)/%.pdf: $(BUILD)/%.md
-	$(PANDOC) $(PANDOC_FLAGS) $< -o $@
-
-
-.SECONDEXPANSION:
-$(BUILD)/%.pdf: $$(shell $(CHAPTERS) %)
-	$(PANDOC) $(PANDOC_FLAGS) $^ -o $@
-
-
-$(BUILD)/%.md: %.md
-	$(PREPARE) $<
-
-
-$(BUILD)/%.md:
-	$(PREPARE)
-
-
-.PHONY: clean
 clean:
-	rm -f $(BUILD)/*.pdf $(BUILD)/*.md
+	rm --force --verbose $(BUILD)/*

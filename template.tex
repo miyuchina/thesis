@@ -1,0 +1,72 @@
+\documentclass[11pt]{memoir}
+
+\usepackage{graphicx}
+\usepackage{multicol}
+\usepackage{tikz}
+\usepackage{xeCJK}
+\usepackage[hidelinks,breaklinks=true,pdfpagemode=UseOutlines]{hyperref}
+\usepackage[notes,backend=biber]{biblatex-chicago}
+
+\pagestyle{simple}
+\chapterstyle{hangnum}
+
+\OnehalfSpacing
+\setlength{\parskip}{0em}
+
+\setmainfont{Plantin Std}
+\setCJKmainfont{STKaiti}
+\setmonofont{PT Sans Narrow}
+
+\usetikzlibrary{decorations.markings}
+\graphicspath{{img/}}
+
+\addbibresource{bib.bib}
+
+$if(csl-refs)$
+\newlength{\cslhangindent}
+\setlength{\cslhangindent}{1.5em}
+\newenvironment{cslreferences}%
+  {$if(csl-hanging-indent)$\setlength{\parindent}{0pt}%
+  \everypar{\setlength{\hangindent}{\cslhangindent}}\ignorespaces$endif$}%
+  {\par}
+$endif$
+
+\newenvironment{epi}%
+    {\cleardoublepage%
+     \setlength{\parindent}{0pt}
+     \begin{flushright}}%
+     {\end{flushright}}
+
+\newenvironment{ack}%
+    {\setlength{\parindent}{0pt}%
+     \setlength{\parskip}{\baselineskip}%
+     \raggedright%
+     }%
+    {}
+
+\renewcommand*{\bibfont}{\small}
+
+\setlength{\footmarkwidth}{1.8em}
+\setlength{\footmarksep}{0em}
+\footmarkstyle{#1. }
+
+\begin{document}
+
+\include{cover}
+
+\frontmatter
+
+\include{frontmatter}
+
+\tableofcontents*
+
+\counterwithout{figure}{chapter}
+
+$body$
+
+\backmatter
+
+\raggedright
+\printbibliography
+
+\end{document}

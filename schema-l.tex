@@ -1,0 +1,38 @@
+\begin{figure}[h]
+    \centering
+    \footnotesize
+    \begin{tikzpicture}[%
+        every node/.style={circle,inner sep=1pt,thick},%
+        ->-/.style={%
+            thick,%
+            decoration={%
+                markings,%
+                mark=at position #1 with {\arrow{latex}}
+            }, postaction={decorate}
+        }%
+    ]
+
+        \node[draw,minimum size=1em] (S) at (0,4) {};
+        \node at (-0.75,4) {(Es) S};
+
+        \node[draw,minimum size=1em] (a) at (0,0) {};
+        \node at (-0.75,0) {(ego) a};
+
+        \node[draw,fill,minimum size=1em] (A) at (4,0) {};
+        \node[draw,minimum size=1.2em,label={[label distance=-0.2em]right:\,\,Other}] at (4.5,0) {A};
+
+        \node[draw,fill,minimum size=1em] (a') at (4,4) {};
+        \node[draw,minimum size=1.2em,label={[label distance=-0.2em]right:' other}] at (4.5,4) {a};
+
+        \draw [->-=0.5,densely dashed] (S)--(a');
+        \draw [->-=0.5] (A)--(a);
+        \draw [->-=0.55] (a')--(a);
+        \draw [->-=1.0] (A)--(2.05,1.95);
+        \draw [->-=1.0,densely dashed] (1.7,2.3)--(S);
+
+        \node at (3.15,1.15) {\rotatebox{-45}{{unconscious}}};
+        \node at (1.85,2.15) {\rotatebox{45}{{imaginary relation}}};
+
+    \end{tikzpicture}
+    \caption{Schema L}
+\end{figure}
